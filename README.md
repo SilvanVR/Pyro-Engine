@@ -1,7 +1,5 @@
 # Pyro-Engine
 
-
-
 My first real project, which i started in March 2016 in preparation for my bachelor thesis 
 (Here the link btw: https://www.dropbox.com/s/z1v8gcx79xs8xus/SilvanHau%20BachelorThesis.pdf?dl=0). 
 At that time i had almost no knowledge about C++, Visual Studio (which can be quite a pain if not familiar with)
@@ -13,9 +11,20 @@ were originally released one month after i started this project in 02/2016. This
 that starting with vulkan is a bad idea. It's made for performance but only if you have the proper knowledge about it.
 
 This is mainly the reason why the code is not very clean and changed a lot several times, resulting in a poor overall
-structure. Because of that i decided to create a new engine using DirectX 11.
+structure. But it works and the interface is in my opinion very good but the code behind it, well if you like spaghetti, you will 
+probably like it too :D
 
-
+Main features:
+ - Own Math Library
+ - Deferred Rendering with different Light-Volumes and Culling
+ - Physically Based Rendering
+ - Own GUI Rendering
+ - Tons of Post-Processing (Bloom, Light-Shafts, DOA, HDR...)
+ - Variance Soft-Shadows
+ - Proper Resource Management (Load resources across severyl scenes only once)
+ - Scene Management (Load different scenes, keep several scenes in RAM at the same time -> switch instantly between loaded scenes)
+ - Rendering via JSON - scene descriptions + Hot-Reloading (change stuff in the .json file, see instantly the result)
+ - Node-Addon: Use the renderer in javascript via Node-JS! Render via JSON requests!
 
 Some Screenshots:
 ![Alt text](/screens/light_shafts.png?raw=true "")
