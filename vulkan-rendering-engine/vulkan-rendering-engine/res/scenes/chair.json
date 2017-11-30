@@ -1,0 +1,107 @@
+{
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+      "ambient_intensity" : 0.1,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/tropical_sunny_day.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 2.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : true,
+		"fog" : false
+ 	},
+	"sampler" :
+	{
+		"max_aniso" : 8.0,
+		"filter" : "linear",
+		"mipmap_mode" : "linear"		
+	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+    "transform" :
+    {
+      "position" : { "x" : 0, "y" : 0, "z" : 10 },
+      "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+      "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+    }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/tropical_sunny_day.dds"
+  },
+
+  "lights" :
+  {
+    "dirLight" :
+	{
+		"type" : "directional",
+		"intensity" : 3.0,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"direction" : { "x": 0, "y" : -1, "z": 0.1 },
+		"shadowInfo" :
+		{
+			"size" : 11,
+			"blur_strength" : 0.5,
+			"distance" : 150
+		}
+	}
+  },
+    
+  "models" :
+  {
+	 "crate" : "/models/crate.obj",
+	 "chair0" : "G:/models/chairs/chairs_1fb7954c15b796684c23105e82a95b33/model.dae"
+  },
+
+  "materials" :
+  {
+	"mat_basic" :
+	{
+	  "diffuse" : "G:/models/floor_textures/tiles/tile_tile_0069_01_tiled_s.jpg",
+	  "uvScale" : 20,
+	  "roughness" : 0.8,
+	  "metallic" : 0
+	}
+  },
+
+  "objects" :
+  {
+	"funky" :
+	{
+		"model" : "chair0",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : 0, "z" : 0 },
+		  "scale"    : { "x" : 10, "y" : 10, "z" : 10 },
+		  "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+		}
+	},
+	"plane" :
+	{
+		"model" : "DefaultQuad",
+		"material" : "mat_basic",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : 0, "z" : 0 },
+		  "scale"    : { "x" : 100, "y" : 100, "z" : 1 },
+		  "rotation" : { "x" : 90, "y" : 0, "z" : 0 }
+		}
+	}
+  }
+
+}

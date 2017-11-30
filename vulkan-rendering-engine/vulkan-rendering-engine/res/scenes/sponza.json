@@ -1,0 +1,67 @@
+{
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+      "ambient_intensity" : 1.0,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/tropical_sunny_day.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : false,
+		"fog" : false
+ 	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",   
+	"transform" : { "position" : { "x" : 0, "y" : 0, "z" : 10 } }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/tropical_sunny_day.dds"
+  },
+
+  "lights" :
+  {
+    "dirLight" :
+	{
+		"type" : "directional",
+		"intensity" : 3,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"direction" : { "x": 0, "y" : -1, "z": -1 }
+	}
+  },
+    
+  "models" :
+  {
+	 "model_sponza" : "/models/sponza/sponza.obj"
+  },
+
+  "objects" :
+  {
+	"sponza" :
+	{
+		"model" : "model_sponza",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : 0, "z" : 0 },
+		  "scale"    : { "x" : 0.1, "y" : 0.1, "z" : 0.1 },
+		  "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+		}
+	}
+  }
+
+}

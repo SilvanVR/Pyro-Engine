@@ -1,0 +1,89 @@
+{
+
+  "settings" :
+  {
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : true,
+		"doa" : false,
+		"fog" : false
+ 	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+    "transform" : { "position" : { "x" : 0, "y" : 0, "z" : 10 } }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/thick_clouds.dds"
+  },
+  
+  "shaders" :
+  {
+	"shader_reflect" : "/shaders/reflect"
+  },
+  
+  "models" :
+  {
+     "sphere" : "/models/sphere.obj",
+	 "cube" : "/models/cube.obj"
+  },
+ 
+  "materials" :
+  {
+    "mat_reflect" :
+	{
+	  "shader" : "shader_reflect",
+	  "SamplerCubeMap" : "/textures/cubemaps/thick_clouds.dds"
+	},
+	"mat_01" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "color" : { "r" : 100, "g" : 0, "b" : 0 }
+	},
+	"mat_02" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "color" : { "r" : 0, "g" : 1000, "b" : 0 }
+	},
+	"mat_03" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "color" : { "r" : 0, "g" : 0, "b" : 1000 }
+	}
+  },
+
+  "objects" :
+  {
+	"sphere" :
+	{
+		"model" : "sphere",
+		"material" : "mat_reflect",
+		"transform" : { "position" : { "x" : 0, "y" : 3, "z" : 0 }	}
+	},
+	"cube_01" :
+	{
+		"model" : "cube",
+		"material" : "mat_01",
+		"transform" : { "position" : { "x" : 0, "y" : 0, "z" : 0 } }
+	},
+	"cube_02" :
+	{
+		"model" : "cube",
+		"material" : "mat_02",
+		"transform" : { "position" : { "x" : 5, "y" : 0, "z" : 0 } }
+	},
+	"cube_03" :
+	{
+		"model" : "cube",
+		"material" : "mat_03",
+		"transform" : { "position" : { "x" : -5, "y" : 0, "z" : 0 } }
+	}
+  }
+
+}

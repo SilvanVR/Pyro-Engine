@@ -1,0 +1,98 @@
+{
+
+  "id" : "MyNeatScene",
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+	  "enabled" : true,
+      "ambient_intensity" : 0.7,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/tropical_sunny_day.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : false,
+		"fog" : false,
+		"light_shafts" : false
+ 	},
+	"sampler" :
+	{
+		"max_aniso" : 8.0,
+		"filter" : "linear",
+		"mipmap_mode" : "linear"		
+	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+    "transform" :
+    {
+      "position" : { "x" : 0, "y" : 0, "z" : 10 },
+      "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+      "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+    }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/sunset.dds"
+  },
+
+  "models" :
+  {
+     "mesh_0" : "/models/sphere.obj",
+	 "mesh_plane" : "/models/plane.obj"
+  },
+
+  "materials" :
+  {
+	"mat_grass" :
+	{
+	  "diffuse" : "/textures/grass.dds",
+	  "uvScale" : 10
+	},
+	"mat_parkett" :
+	{
+	  "diffuse" : "/textures/parkett.dds",
+	  "uvScale" : 10
+	}
+  },
+
+  "objects" :
+  {
+	"funky" :
+	{
+		"model" : "mesh_0",
+		"material" : "mat_parkett",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : 0, "z" : 0 },
+		  "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+		  "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+		}
+	},
+	"plane" :
+	{
+		"model" : "mesh_plane",
+		"material" : "mat_grass",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : -7, "z" : 0 },
+		  "scale"    : { "x" : 100, "y" : 100, "z" : 1 },
+		  "rotation" : { "x" : 90, "y" : 0, "z" : 0 }
+		}
+	}
+  }
+
+}

@@ -1,0 +1,167 @@
+{
+
+  "id" : "MyAwesomeScene",
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+      "enabled" : false,
+      "ambient_intensity" : 0.1,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/tropical_sunny_day.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : false,
+		"fog" : false,
+		"light_shafts" : false
+ 	},
+	"sampler" :
+	{
+		"max_aniso" : 8.0,
+		"filter" : "linear",
+		"mipmap_mode" : "linear"		
+	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+	"fov" : 60,
+    "transform" :
+    {
+      "position" : { "x" : 0, "y" : 0, "z" : 10 },
+      "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+      "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+    }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/tropical_sunny_day.dds"
+  },
+  
+  "lights" :
+  {
+    "dirLight" :
+	{
+		"type" : "directional",
+		"intensity" : 2.0,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"direction" : { "x": 0, "y" : -1, "z": 1 },
+		"shadowInfo" :
+		{
+			"size" : 11,
+			"blur_strength" : 1.0,
+			"distance" : 200
+		}
+	},
+	"pointLight" :
+	{
+		"type" : "point",
+		"intensity" : 300.0,
+		"color" : "#FFFFFF",
+		"attenuation" : { "x": 0, "y" : 0, "z": 1 },
+		"position" : { "x": 0, "y" : 10, "z": 0 },
+		"shadowInfo" : { "size" : 10 }
+	},
+	"spotLight" :
+	{
+		"type" : "spot",
+		"intensity" : 500.0,
+		"fov" : 100,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"attenuation" : { "x": 0, "y" : 0, "z": 0.3 },
+		"position" : { "x": 0, "y" : -5, "z": 3 },
+		"direction" : { "x": 0, "y" : 0, "z": -1 },
+		"shadowInfo" : { "size" : 9, "blur_strength" : 1.0 }
+	}
+  },
+  
+  "models" :
+  {
+     "mesh_0" : "/models/sphere.obj",
+	 "mesh_plane" : "/models/plane.obj"
+  },
+  "shaders" :
+  {
+	"shader_reflect" : "/shaders/reflect",
+	"shader_test" : "/shaders/test"
+  },
+  
+  "materials" :
+  {
+	"mat_grass" :
+	{
+	  "diffuse" : "/textures/grass.dds",
+	  "uvScale" : 10
+	},
+	"mat_basic" :
+	{
+	  "diffuse" : "/textures/rock.jpg",
+	  "uvScale" : 1,
+	  "roughness" : 1,
+	  "metallic" : 0
+	},
+	"mat_white" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "roughness" : 0,
+	  "metallic" : 1,
+	  "color" : "#FFFFFF"
+	},
+	"mat_reflect" :
+	{
+	  "shader" : "shader_reflect",
+	  "SamplerCubeMap" : "/textures/cubemaps/thick_clouds.dds"
+	},	
+	"mat_white" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "roughness" : 0,
+	  "metallic" : 1,
+	  "color" : "#FFFFFF"
+	},
+	"mat_test" :
+	{
+	  "shader" : "shader_test",
+	  "color" : "#FFFF00"
+	}
+  },
+
+  "objects" :
+  {	
+	"funky" :
+	{
+		"model" : "mesh_0",
+		"material" : "mat_white",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : 0, "z" : 0 },
+		  "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+		  "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+		}
+	},
+	"plane" :
+	{
+		"model" : "mesh_plane",
+		"material" : "mat_grass",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : -7, "z" : 0 },
+		  "scale"    : { "x" : 100, "y" : 100, "z" : 1 },
+		  "rotation" : { "x" : 90, "y" : 0, "z" : 0 }
+		}
+	}
+  }
+
+}

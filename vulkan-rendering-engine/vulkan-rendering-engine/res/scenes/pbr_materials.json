@@ -1,0 +1,165 @@
+{
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+      "ambient_intensity" : 1.0,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/hill.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : false,
+		"fog" : false
+ 	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+    "transform" : { "position" : { "x" : 0, "y" : 0, "z" : 20 } }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/hill.dds"
+  },
+
+  "lights" :
+  {
+    "dirLight" :
+	{
+		"type" : "directional",
+		"intensity" : 3.0,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"direction" : { "x": 0, "y" : -1, "z": -1 }
+	}
+  },
+  
+  "models" :
+  {
+     "mesh_sphere" : "/models/sphere.obj",
+	 "mesh_plane" : "/models/plane.obj"
+  },
+
+  "materials" :
+  {
+    "gold" :
+    {
+      "diffuse" : "/textures/pbr/gold/albedo2.png",
+      "normal" : "/textures/pbr/gold/normal.png",
+      "roughness" : "/textures/pbr/gold/roughness.png",
+      "metallic" : "/textures/pbr/gold/metallic.png"
+    },
+	"grass" :
+    {
+      "diffuse" : "/textures/pbr/grass/albedo.png",
+      "normal" : "/textures/pbr/grass/normal.png",
+      "roughness" : "/textures/pbr/grass/roughness.png"
+    },
+	"iron" :
+    {
+      "diffuse" : "/textures/pbr/rusted_iron/basecolor.png",
+      "normal" : "/textures/pbr/rusted_iron/normal.png",
+      "roughness" : "/textures/pbr/rusted_iron/roughness.png",
+      "metallic" : "/textures/pbr/rusted_iron/metallic.png"
+    },
+	"stone" :
+    {
+      "diffuse" : "/textures/pbr/stone/albedo.png",
+      "normal" : "/textures/pbr/stone/normal.png",
+      "roughness" : "/textures/pbr/stone/roughness.png",
+      "metallic" : "/textures/pbr/stone/metallic.png",
+	  "ao" : "/textures/pbr/stone/ao.png"
+    },
+	"oakfloor" :
+    {
+      "diffuse" : "/textures/pbr/oakfloor/albedo.png",
+      "normal" : "/textures/pbr/oakfloor/normal.png",
+      "roughness" : "/textures/pbr/oakfloor/roughness.png",
+      "ao" : "/textures/pbr/oakfloor/ao.png"
+    },
+	"silver" :
+    {
+      "diffuse" : "/textures/pbr/silver/albedo.png",
+      "normal" : "/textures/pbr/silver/normal.png",
+      "roughness" : "/textures/pbr/silver/roughness.png",
+      "metallic" : "/textures/pbr/silver/metallic.png"
+    },
+	"wall" :
+    {
+      "diffuse" : "/textures/pbr/wall/albedo.png",
+      "normal" : "/textures/pbr/wall/normal.png",
+      "roughness" : "/textures/pbr/wall/roughness.png",
+      "metallic" : "/textures/pbr/wall/metallic.png",
+	  "ao" : "/textures/pbr/wall/ao.png"
+    }
+  },
+
+  "objects" :
+  {
+	"ground" :
+	{
+		"model" : "mesh_plane",
+		"material" : "grass",
+		"transform" :
+		{
+		  "position" : { "x" : 0, "y" : -3, "z" : 0 },
+		  "scale"    : { "x" : 10, "y" : 10, "z" : 1 },
+		  "rotation" : { "x" : 90, "y" : 0, "z" : 0 }
+		}
+	},
+	"sphere0" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "gold",
+		"transform" : { "position" : { "x" : 0, "y" : 0, "z" : 0 }	}
+	},
+	"sphere1" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "grass",
+		"transform" : { "position" : { "x" : 2, "y" : 0, "z" : 0 }	}
+	},
+	"sphere2" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "iron",
+		"transform" : { "position" : { "x" : -2, "y" : 0, "z" : 0 }	}
+	},
+	"sphere3" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "stone",
+		"transform" : { "position" : { "x" : 4, "y" : 0, "z" : 0 }	}
+	},
+	"sphere4" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "oakfloor",
+		"transform" : { "position" : { "x" : -4, "y" : 0, "z" : 0 }	}
+	},
+	"sphere5" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "silver",
+		"transform" : { "position" : { "x" : 6, "y" : 0, "z" : 0 }	}
+	},
+	"sphere6" :
+	{
+		"model" : "mesh_sphere",
+		"material" : "wall",
+		"transform" : { "position" : { "x" : -6, "y" : 0, "z" : 0 }	}
+	}
+  }
+
+}
