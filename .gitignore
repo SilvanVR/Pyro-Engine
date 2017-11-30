@@ -1,0 +1,80 @@
+# Temp stuff
+.DS_Store
+*.tmproj
+*.bak
+*.pyc
+*.db
+*~backup~
+*~
+#*#
+desktop.ini
+
+# TeX stuff
+*.lot 
+*.lbl 
+*.tec 
+*.aux 
+*.log 
+*.bbl 
+*.blg 
+*.ps 
+*.toc 
+*.lof 
+*.dvi 
+*.brf
+*.synctex.gz
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Visual Studio Stuff
+*.ilk
+*.pdb
+*.log
+*.iobj
+*.ipdb
+*.filters
+*.idb
+*.tlog
+*.tlog/
+*.lastbuildstate
+*.exp
+obj/
+bin/
+Win32/
+x32/
+x64/
+GeneratedFiles/
+
+*.sdf
+*.user
+*.suo
+
+# qmake stuff
+build-*/
