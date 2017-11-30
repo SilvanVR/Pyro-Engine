@@ -1,0 +1,36 @@
+// Platzieren Sie Ihre Einstellungen in dieser Datei, um Standard- und Benutzereinstellungen zu überschreiben.
+{
+    "files.associations": {
+        "*h*h*h*hfunctional": "cpp",
+        "future": "cpp",
+        "*hqueue": "cpp",
+        "stack": "cpp",
+        "tuple": "cpp",
+        "vector": "cpp",
+        "iterator": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "queue": "cpp",
+        "*h*h*h*hqueue": "cpp",
+        "regex": "cpp",
+        "*hstack": "cpp",
+        "valarray": "cpp",
+        "*h*h*h*h*hxhash": "cpp",
+        "xtree": "cpp",
+        "*h*hmutex": "cpp",
+        "allocators": "cpp",
+        "*h*h*h*h*h*h*h*hmutex": "cpp",
+        "mutex": "cpp",
+        "shared_mutex": "cpp",
+        "*h*h*h*hdeque": "cpp",
+        "functional": "cpp",
+        "*h*h*h*h*h*h*h*h*h*hxfunctional": "cpp",
+        "xfunctional": "cpp",
+        "xlocmon": "cpp",
+        "*hxhash": "cpp",
+        "*h*h*h*h*h*h*hxutility": "cpp",
+        "xutility": "cpp",
+        "*h*h*h*harray": "cpp"
+    }
+}

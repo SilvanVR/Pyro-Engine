@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+
+    "windows": {
+        "command": "cmd",
+        "isShellCommand": true,
+        "args": ["/C"],
+        "showOutput": "always",
+        "echoCommand": true,
+        "suppressTaskName": true,
+        "isBackground": true,
+        "tasks": [
+            {
+                "taskName": "ts",
+                "args": [
+                    "tsc"
+                ]          
+            },
+            {
+                "taskName": "GYP",
+                "args": [
+                    "node-gyp configure & node-gyp build"
+                ]
+            },
+             {
+                "taskName": "GYP DEBUG",
+                "args": [
+                    "node-gyp rebuild --debug"
+                ]
+            },
+            {
+                "taskName": "All",
+                "args": [
+                    "build.bat"
+                ],
+                "isBuildCommand": true
+            }
+        ]
+    }
+
+}

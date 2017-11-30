@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Pyro Renderer - Node Addon Demo</title>
+
+        <script type="text/javascript" src="script.js"> </script>
+    </head>
+
+    <body>
+        <canvas id="myCanvas" width="640" height="480" style="border:1px solid #d3d3d3;" onclick="render()"></canvas>
+        <br>
+        <button type="button" onclick="render(false);"> Render </button>
+        <button type="button" onclick="render(true);"> Render from file </button>
+
+        <div id="info">Click on Canvas or the button to start an request!</div>
+        <br>
+        Filename of json-scene: <input type="text" id="textBox" value="scene0.json">
+
+        <br>
+        Custom JSON-Text:
+        <br>
+        <textarea id="textArea" rows="200" cols="200">
+{    
+    "id" : "MySuperNiftyAwesomeScene",
+
+    "settings" :
+    {
+        "ibl" : 
+        {
+            "enabled" : true,
+            "ambient_intensity" : 0.1,
+            "specular_intensity" : 1.0,
+            "env_map" : 
+            {
+                "src" : "/textures/cubemaps/tropical_sunny_day.dds",
+                "irradiance_size" : 128,
+                "prem_size" : 512
+            }	  
+        },
+        "post_processing":
+        {
+            "resolution_mod" : 1.0,
+            "fxaa" : true,
+            "bloom" : false,
+            "doa" : false,
+            "fog" : false
+        }
+    },
+
+    "camera" : 
+    {
+        "mode" : "perspective",
+        "transform" :
+        {
+            "position" : { "x" : 0, "y" : 0, "z" : 10 },
+            "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+            "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+        }
+    },  
+    
+    "skybox" :
+    {
+    "cubemap" : "/textures/cubemaps/tropical_sunny_day.dds"
+    },
+
+    "lights" :
+    {
+        "dirLight" :
+        {
+            "type" : "directional",
+            "intensity" : 2.0,
+            "color" : { "r": 1, "g" : 1, "b": 1 },
+            "direction" : { "x": 0, "y" : -1, "z": -1 },
+            "shadowInfo" :
+            {
+                "size" : 11,
+                "blur_strength" : 1.0,
+                "distance" : 200
+            }
+        }
+    },
+    
+    "models" :
+    {
+        "mesh_plane" : "/models/plane.obj",
+        "crate" : "/models/crate.obj"
+    },
+
+    "materials" :
+    {
+        "mat_white" :
+        {
+            "diffuse" : "/textures/defaults/white.dds",
+            "roughness" : 1
+        },
+        "mat_grass" :
+        {
+            "diffuse" : "/textures/grass.dds",
+            "roughness" : 1,
+            "uvScale" : 10
+        },
+        "mat_basic" :
+        {
+            "diffuse" : "/textures/rock.jpg",
+            "uvScale" : 5,
+            "roughness" : 1,
+            "metallic" : 0
+        }
+    },
+
+    "objects" :
+    {
+        "funky" :
+        {
+            "model" : "crate",
+            "material" : "mat_basic",
+            "transform" :
+            {
+                "position" : { "x" : 0, "y" : 0, "z" : 0 },
+                "scale"    : { "x" : 0.01, "y" : 0.01, "z" : 0.01 },
+                "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+            }
+        },
+        "groovy" :
+        {
+            "model" : "crate",
+            "material" : "mat_white",
+            "transform" :
+            {
+                "position" : { "x" : 5, "y" : 0, "z" : 0 },
+                "scale"    : { "x" : 0.01, "y" : 0.01, "z" : 0.01 },
+                "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+            }
+        },
+        "plane" :
+        {
+            "model" : "mesh_plane",
+            "material" : "mat_grass",
+            "transform" :
+            {
+                "position" : { "x" : 0, "y" : -7, "z" : 0 },
+                "scale"    : { "x" : 100, "y" : 100, "z" : 1 },
+                "rotation" : { "x" : 90, "y" : 0, "z" : 0 }
+            }
+        }
+    }
+}
+    </textarea>
+
+    </body>
+
+    <script>
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");  
+        var info = document.getElementById("info");
+
+        function render(fromFile)
+        {
+            console.log("Render...");
+            var xhr = new XMLHttpRequest();
+            xhr.open("get", "/renderSize", true);    
+            xhr.onload = function()
+            {
+                // Resize canvas first so it fits the rendered result
+                var json = JSON.parse(xhr.response);
+                canvas.width = json.width;
+                canvas.height = json.height;
+
+                info.innerHTML = "Resolution: [" + json.width + "," + json.height + "]";
+
+                if (fromFile)
+                    renderRequestFromFile()
+                else
+                    renderRequest();
+            }
+            xhr.send();
+        }
+
+        function renderRequest()
+        {
+            var xhr = new XMLHttpRequest();
+            var fileName = document.getElementById("textBox").value;
+            var textAreaData = document.getElementById("textArea").value;
+
+            xhr.open("post", "/render", true);    
+            xhr.setRequestHeader("Content-type", "application/json");  
+            xhr.responseType = "arraybuffer";
+            xhr.onload = function()
+            {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var pixelBuffer = xhr.response;
+                var byteArray = new Uint8Array(pixelBuffer);
+               
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                var data = imageData.data;
+                for (var i = 0; i < data.length; i += 4) {
+                    data[i]     = byteArray[i + 2]; // red
+                    data[i + 1] = byteArray[i + 1]; // green
+                    data[i + 2] = byteArray[i + 0]; // blue
+                    data[i + 3] = byteArray[i + 3]; // alpha
+                }
+                ctx.putImageData(imageData, 0, 0);
+                console.log("Success!");
+            }
+            xhr.send(textAreaData);
+        }
+
+        function renderRequestFromFile()
+        {
+            var xhr = new XMLHttpRequest();
+            var fileName = document.getElementById("textBox").value;
+            var textAreaData = document.getElementById("textArea").value;
+
+            xhr.open("get", "/render?fp="+fileName, true);            
+            xhr.responseType = "arraybuffer";
+            xhr.onload = function()
+            {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var pixelBuffer = xhr.response;
+                var byteArray = new Uint8Array(pixelBuffer);
+               
+                var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                var data = imageData.data;
+                for (var i = 0; i < data.length; i += 4) {
+                    data[i]     = byteArray[i + 2]; // red
+                    data[i + 1] = byteArray[i + 1]; // green
+                    data[i + 2] = byteArray[i + 0]; // blue
+                    data[i + 3] = byteArray[i + 3]; // alpha
+                }
+                ctx.putImageData(imageData, 0, 0);
+                console.log("Success!");
+            }
+            xhr.send(textAreaData);
+        }
+
+        var textareas = document.getElementsByTagName('textarea');
+        var count = textareas.length;
+        for(var i=0;i<count;i++){
+            textareas[i].onkeydown = function(e){
+                if(e.keyCode==9 || e.which==9){
+                    e.preventDefault();
+                    var s = this.selectionStart;
+                    this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
+                    this.selectionEnd = s+1; 
+                }
+            }
+        }
+
+    </script>
+
+</html>

@@ -1,0 +1,37 @@
+v1.0.1:
+- fixed look at matrix (was left handed before)
+- fixed perspective matrix 
+
+v1.02:
+- added rectangle-class
+
+v1.03:
+- made all data fields in vec2, vec3, vec4 and quat private and as an array
+--> Field access now through functions e.g. vec2.x()b
+
+v1.04:
+- removed vec - unions from Mat3x3 and Mat4x4
+- updated Rectangle-Class
+- removed initializer list in vec2, vec3, vec4, quaternion
+
+v1.05:
+- added explicit conversion Point -> Vec3
+- added getTranslation() function in Mat4x4-class
+
+v1.06:
+- added operator point * scalar (and float * point).. scalar * point make some problems
+- get scale from a matrix
+
+v1.07:
+- added quaternion operators (+, -, *)
+- rewrote slerp / lerp
+- get a quaternion from a transformation matrix
+
+v1.08:
+- swapped left/right and forward/back static vectors in Vec3 + Vec2 + quaternion-class
+ -> Forward is now (0,0,1) instead of (0,0,-1) and left is now (1,0,0) instead of (-1,0,0)
+
+v1.09:
+- added isValid() function for all vector types which checks if the 
+  values are not FLT_MAX (include <cfloat> in utils.h)
+- added static INVALID vectors
