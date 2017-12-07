@@ -127,6 +127,9 @@ namespace Pyro
         std::string physicalPath = VFS::resolvePhysicalPath(virtualPath);
         JSON json = loadFromFile(physicalPath);
 
+        if (json == nullptr)
+            return;
+
         JSONScene* scene = getScene(json);
 
         additionalSceneInfo[scene].fileInfo.filePath = physicalPath;
@@ -139,6 +142,9 @@ namespace Pyro
     void JSONSceneManager::switchScene(const std::string& jsonText)
     {
         JSON json = parseJSON(jsonText.c_str());
+
+        if (json == nullptr)
+            return;
 
         JSONScene* scene = getScene(json);
 
@@ -238,7 +244,8 @@ namespace Pyro
         }
         catch (...)
         {
-            Logger::Log("An Error occured in json.hpp: INVALID JSON. Check your json file", LOGTYPE_ERROR);
+            Logger::Log("An Error occured in json.hpp: INVALID JSON. Check your json file", LOGTYPE_WARNING);
+            return nullptr;
         }
         return json;
     }

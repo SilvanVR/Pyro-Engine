@@ -9,6 +9,7 @@
         Pyro::VFS::mount("textures", "../vulkan-rendering-engine/res/textures");
         Pyro::VFS::mount("fonts", "../vulkan-rendering-engine/res/fonts");
         Pyro::VFS::mount("shaders", "../vulkan-rendering-engine/res/shaders");
+        Pyro::VFS::mount("scenes", "../vulkan-rendering-engine/res/scenes");
 
         Application app(800, 600);
         return 0;
@@ -23,6 +24,7 @@
         Pyro::VFS::mount("textures", "../vulkan-rendering-engine/res/textures");
         Pyro::VFS::mount("fonts", "../vulkan-rendering-engine/res/fonts");
         Pyro::VFS::mount("shaders", "../vulkan-rendering-engine/res/shaders");
+        Pyro::VFS::mount("scenes", "../vulkan-rendering-engine/res/scenes");
 
         Application app(800, 600);
         return 0;

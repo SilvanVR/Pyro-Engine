@@ -6,7 +6,7 @@
   {
     "ibl" : 
     {
-      "enabled" : false,
+      "enabled" : true,
       "ambient_intensity" : 0.1,
       "specular_intensity" : 1.0,
       "env_map" : 

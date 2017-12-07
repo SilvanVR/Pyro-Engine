@@ -2,6 +2,7 @@
 
 #include "time/time_manager.h"
 #include "Input/input_manager.h"
+#include "../../vulkan-rendering-engine/src/json scene/json_scene_manager.h"
 
 using namespace Pyro;
 
@@ -25,7 +26,7 @@ Application::Application(int width, int height)
 #endif
 
 // Will be set to true if rendering to files has been finished
-static bool renderingFinished = false;
+static bool g_renderingFinished = false;
 
 // The renderer renders every call to draw() one frame of the current scene
 // init() is called once the scene gets initialized
@@ -168,7 +169,7 @@ public:
 
         i++;
         if (i == numCycles)
-            renderingFinished = true;
+            g_renderingFinished = true;
 
 #endif // !USE_WINDOW
     }
@@ -183,15 +184,32 @@ void Application::run()
 
     SceneManager::switchScene(new MyScene());
 
+    {
+        // Important: If loading content from a JSON-File, rendering to a file will
+        // not work, because there is no logic setting "g_renderingFinished" to false.
+        // Therefore the application will end up in an infinite loop.
+
+        //JSONSceneManager::switchSceneFromFile( "/scenes/scene0.json" );
+        Logger::setLogLevel(LOG_LEVEL_IMPORTANT);       // Show only important messages
+        JSONSceneManager::setHotReloading(true, 0.5f);  // Enable hot-reloading
+    }
+
 #if !USE_WINDOW
-    while (!renderingFinished)
+    while (!g_renderingFinished)
     {
         // delta value is irrelevant in this case
         renderer.update(0);
         renderer.draw();
     }
-#else // Render into a window and observe the scene (FPS Camera script is attached to the camera). 
-    // #define for rendering a file instead is in HEADER-File
+#else 
+    // Render into a window and observe the scene (FPS Camera script is attached to the camera). 
+    // #define for rendering to a file instead is in HEADER-File
+    Input::attachFunc(KeyCodes::G, [&] {renderer.toggleGUI(); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::V, [&] {renderer.toggleVSync(); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::Z, [&] {renderer.toggleShadows(); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::P, [&] {renderer.togglePostProcessing(); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::F, [&] {renderer.toggleBoundingBoxes(); }, Input::KEY_PRESSED);
+
     while (window.update() && !Input::getKeyDown(KeyCodes::ESCAPE))
     {
         TimeManager::update();
