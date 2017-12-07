@@ -21,9 +21,9 @@ Main features:
  - Own GUI Rendering
  - Tons of Post-Processing (Bloom, Light-Shafts, DOA, HDR...)
  - Variance Soft-Shadows
- - Proper Resource Management (Load resources across severyl scenes only once)
+ - Proper Resource Management (Load resources across several scenes only once)
  - Scene Management (Load different scenes, keep several scenes in RAM at the same time -> switch instantly between loaded scenes)
- - Rendering via JSON - scene descriptions + Hot-Reloading (change stuff in the .json file, see instantly the result)
+ - Rendering via JSON-Files + Hot-Reloading (change stuff in the .json file, see instantly the result)
  - Node-Addon: Use the renderer in javascript via Node-JS! Render via JSON requests!
 
 Some Screenshots:
