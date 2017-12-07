@@ -58,7 +58,7 @@ namespace Pyro
         if(logLevel > currentLogLevel)
             return;
 
-#ifndef NDEBUG
+#ifdef  NDEBUG
         switch (logtype)
         {
         case LogType::LOGTYPE_INFO:

@@ -11,11 +11,11 @@ using namespace Pyro;
 //---------------------------------------------------------------------------
 
 #if USE_WINDOW
-    Application::Application(int width, int height)
-        : window(width, height), renderer(&window)
-    {
-        run();
-    }
+Application::Application(int width, int height)
+    : window(width, height), renderer(&window)
+{
+    run();
+}
 #else
 Application::Application(int width, int height)
     : renderer(Vec2ui(width, height))
@@ -90,9 +90,9 @@ public:
         //---------------------------------------------------------------------------
 
         // Load a mesh from a file (the mesh itself can have materials and textures which will be loaded aswell)
-        //Mesh* mesh = new Mesh("/models/sponza/sponza.obj");
-        Mesh* mesh = new Mesh("/models/cat/cat.obj");
-        Mesh* cube = new Mesh("/models/crate.obj");
+        //auto mesh = MESH("/models/sponza/sponza.obj");
+        auto mesh = MESH("/models/cat/cat.obj");
+        auto cube = MESH("/models/crate.obj");
 
         //---------------------------------------------------------------------------
         //  Textures
@@ -101,8 +101,8 @@ public:
         // Custom sampler, but not necessary
         std::shared_ptr<Sampler> sampler(new Sampler(1.0f, FILTER_LINEAR, FILTER_LINEAR, MIPMAP_MODE_LINEAR));
 
-        Texture* tex_grass = new Texture("/textures/grass.dds", sampler);
-        Texture* tex_rock = new Texture("/textures/rock.jpg", sampler);
+        auto tex_grass = TEXTURE({ "/textures/grass.dds", sampler });
+        auto tex_rock = TEXTURE({ "/textures/rock.jpg", sampler });
 
         //---------------------------------------------------------------------------
         //  Materials
@@ -110,7 +110,7 @@ public:
 
         // Every Material is associated with a shader. Basic materials just take one texture (diffuse one).
         // But they have normal-maps / displacement-maps associated with it aswell.
-        PBRMaterial* grassMat = new PBRMaterial(tex_grass);
+        auto grassMat = PBRMATERIAL(tex_grass);
         // Set some shader-parameters. Of course they have default-values.
         grassMat->setMatMetallic(0.0f);
         grassMat->setMatRoughness(0.0f);
@@ -119,9 +119,9 @@ public:
         //grassMat->setMatDiffuseTexture(diffuseTex);
         //grassMat->setMatNormalMap(normalMap);
 
-        PBRMaterial* rockMat = new PBRMaterial(tex_rock);
+        auto rockMat = PBRMATERIAL(tex_rock);
 
-        Cubemap* cubemap0 = new Cubemap("/textures/cubemaps/tropical_sunny_day.dds");
+        auto cubemap0 = CUBEMAP("/textures/cubemaps/tropical_sunny_day.dds");
 
         //---------------------------------------------------------------------------
         //  Objects
@@ -135,15 +135,15 @@ public:
         // Renderable with a mesh WITH materials
         float scale = 3.0f;
         Renderable* node = new Renderable(mesh, Transform(Point3f(0, 0, 0), Vec3f(scale, scale, scale), Quatf::rotationY(Mathf::deg2Rad(0))));
-    
+
         // Renderable with a mesh + separate material
-        Renderable* box = new Renderable(cube, rockMat, Transform(Point3f(0,10,0), Vec3f(0.01f, 0.01f, 0.01f)));
+        Renderable* box = new Renderable(cube, rockMat, Transform(Point3f(0, 10, 0), Vec3f(0.01f, 0.01f, 0.01f)));
     }
 
     // Update the scene
     void update(float delta) override
     {
-    #if !USE_WINDOW
+#if !USE_WINDOW
         static int i = 0;
         Vec2ui resolution = renderer->get3DRenderResolution();
         Logger::Log("Render-Resolution: [" + std::to_string(resolution.x()) + "," + std::to_string(resolution.y()) + "]");
@@ -167,21 +167,19 @@ public:
         cam->getTransform().lookAt(pointOfInterest);
 
         i++;
-        if(i == numCycles)
+        if (i == numCycles)
             renderingFinished = true;
 
-    #endif // !USE_WINDOW
+#endif // !USE_WINDOW
     }
 
 };
 
 
-
-
 void Application::run()
 {
     // Just uncomment this line to remove the Debug-Menu
-    DebugMenu* dm = new DebugMenu(&renderer, TextureManager::getFont("DebugFont", 24));
+    DebugMenu* dm = new DebugMenu(&renderer, FONT_GET("DebugFont", 24));
 
     SceneManager::switchScene(new MyScene());
 
@@ -193,7 +191,7 @@ void Application::run()
         renderer.draw();
     }
 #else // Render into a window and observe the scene (FPS Camera script is attached to the camera). 
-      // #define for rendering a file instead is in HEADER-File
+    // #define for rendering a file instead is in HEADER-File
     while (window.update() && !Input::getKeyDown(KeyCodes::ESCAPE))
     {
         TimeManager::update();

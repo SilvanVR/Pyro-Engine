@@ -1,0 +1,39 @@
+﻿If you have any questions or need any help please do not hesitate to contact me
+via mail (silvan-hau@web.de) or via facebook (https://www.facebook.com/silvan.hau)
+
+1.) General Information about the build-system is available in the README file
+2.) Please use the provided visual studio solution if possible
+  --> All necessary libs are checked in via git
+  --> the engine supports only x64 builds
+
+<<<< VISUAL STUDIO SOLUTIONS >>>>>
+The visual studio solution contains 4 Projects:
+  --> Application_0: Deprecated, ignore it
+  --> Application_Blank: Contains a minimal build (if you want to start from scratch)
+  --> Application_Into_File: 
+      - Contains a setup where the application uses the engine to render multiple images
+        from an object in different angles and saves the result to an .png image
+        (e.g. a chair from different angles)
+  --> Application_Marcel: Test-Project for Marcel using the Pre-Process step, ignore it
+  --> vulkan-rendering-engine:
+      - Full engine source code
+      - I really don't recommend taking a look into it (spaghetti code! xD)
+
+<<< VISUAL STUDIO CONFIGURATIONS >>>>
+ - always use x64 (there are no libs for x86 on git)
+ - Debug/Release - Static Lib: Builds the engine as a static library in debug or release
+ - Debug/Release: 
+    --> Builds the current project in debug/release mode
+    --> All projects (except the vulkan-rendering-engine) needs the static lib to run
+
+<<< HOW TO BUILD (IN SHORT) >>>
+  --> get the source with libs and assets (around ~1GB)
+  --> open vs solution
+  --> check configuration (x64)
+  --> build "Debug - StaticLib" and "Release - StaticLib" for "vulkan-rendering-engine" once
+    --> Right-Click and build (generates a vulkan-rendering-engine.lib file)
+  --> switch back to debug
+    --> right-click on "Application_Into_File" -> Set as startup-project
+    --> Should be build and running as intended (e.g. via F5)
+
+  --> HAVE FUN!

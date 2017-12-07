@@ -113,7 +113,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>vulkan-rendering-engine.lib;%(AdditionalDependencies)vulkan-1.lib;assimp-vc140-mt.lib;FreeImageLib.lib;freetype.lib;glfw3.lib</AdditionalDependencies>
+      <AdditionalDependencies>vulkan-rendering-engine.lib;%(AdditionalDependencies)vulkan-1.lib;assimp-vc140-mt.lib;FreeImageLib.lib;freetype.lib;glfw3.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,6 +154,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application_into_file.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\vulkan-rendering-engine\vulkan-rendering-engine.vcxproj">
+      <Project>{e9f26f93-927e-49f8-95b5-5176be86500b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
