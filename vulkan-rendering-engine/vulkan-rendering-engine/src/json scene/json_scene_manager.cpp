@@ -81,7 +81,9 @@ namespace Pyro
                     Logger::Log("  >>> " + scene->getName() + ": " + filePath, LOGTYPE_INFO, LOG_LEVEL_NOT_SO_IMPORTANT);
 
                     const SystemTime& fileTime = sceneInfo.fileInfo.fileTime;
-                    if (fileTime != FileSystem::getLastWrittenFileTime(filePath))
+                    SystemTime curFileTime;
+                    bool success = FileSystem::getLastWrittenFileTime(filePath, curFileTime);
+                    if (success && (fileTime != curFileTime))
                     {
                         Logger::Log("Reloading json file " + filePath);
                         switchSceneFromFile(filePath);
@@ -133,7 +135,7 @@ namespace Pyro
         JSONScene* scene = getScene(json);
 
         additionalSceneInfo[scene].fileInfo.filePath = physicalPath;
-        additionalSceneInfo[scene].fileInfo.fileTime = FileSystem::getLastWrittenFileTime(physicalPath);
+        FileSystem::getLastWrittenFileTime(physicalPath, additionalSceneInfo[scene].fileInfo.fileTime);
 
         // Transition to scene
         SceneManager::switchScene(scene, false);
@@ -203,16 +205,16 @@ namespace Pyro
     {
         std::string sceneName = getSceneIdentifier(json);
 
-		JSONScene* scene = nullptr;
-		if (sceneName != JSON_SCENE_NO_IDENTIFIER)
-		{
-			scene = dynamic_cast<JSONScene*>(SceneManager::getScene(sceneName));
-		}
-		else
-		{
-			Logger::Log("Scene with no ID was added. "
-				        "A scene need a the field 'id' in order to be kept in memory", LOGTYPE_WARNING);
-		}
+        JSONScene* scene = nullptr;
+        if (sceneName != JSON_SCENE_NO_IDENTIFIER)
+        {
+            scene = dynamic_cast<JSONScene*>(SceneManager::getScene(sceneName));
+        }
+        else
+        {
+            Logger::Log("Scene with no ID was added. "
+                        "A scene need a the field 'id' in order to be kept in memory", LOGTYPE_WARNING);
+        }
 
         if (scene != nullptr)
         {

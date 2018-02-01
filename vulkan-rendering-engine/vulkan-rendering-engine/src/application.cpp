@@ -35,6 +35,9 @@ public:
         cam->addComponent(new CMoveCamera(70, 3, 5, ECameraMode::MAYA));
         renderer->setCamera(cam);
 
+        Node* generalScriptNode = new Node("InteractionMaster");
+        generalScriptNode->addComponent(new CInteract(70.0f));
+
         CubemapPtr cubemap = CUBEMAP({ "/textures/cubemaps/sunset.dds" });
         Skybox* skybox = new Skybox(cubemap);
 
@@ -53,7 +56,8 @@ public:
         //Node* fpsGUI = new Node("fpsGUI");
         //fpsGUI->addComponent(new GUI({ shadowMap }));
 
-        Renderable* crate = new Renderable("Crate", crateMesh, crateMat, Transform(Point3f(0, 0, 0), Vec3f(0.01f, 0.01f, 0.01f)));
+        float scale = 0.01f;
+        Renderable* crate = new Renderable("Crate", crateMesh, crateMat, Transform(Point3f(0, 0, 0), Vec3f(scale,scale,scale)));
         crate->addComponent(new CRotate(1));
     }
 
@@ -687,7 +691,6 @@ public:
 
 };
 
-
 class ResourceTestScene : public Scene
 {
 public:
@@ -866,12 +869,43 @@ public:
     }
 };
 
-std::string jsonFile = "/scenes/scene0.json";
+class AudiA6Scene : public Scene
+{
+public:
+    AudiA6Scene() : Scene("AudiA6") {}
+    ~AudiA6Scene() {}
+
+    void init(RenderingEngine* renderer) override
+    {
+        Camera* cam = new Camera(Transform(Point3f(0, 0, 20)));
+        cam->addComponent(new CMoveCamera(70, 3, 5, ECameraMode::MAYA));
+        cam->addComponent(new CInteract(70.0f));
+        renderer->setCamera(cam);
+
+        CubemapPtr cubemap = CUBEMAP("/textures/cubemaps/sunset.dds");
+        Skybox* skybox = new Skybox(cubemap);
+
+        MeshPtr carMesh = MESH({ "/models/a6.fbx" });
+
+        auto tex0 = TEXTURE("/textures/defaults/white.dds");
+        PBRMaterialParams params = { tex0, 1.0f, 0.0f, Color::BLACK };
+
+        auto metallic = PBRMATERIAL(params);
+
+        float scale = 0.2f;
+        Transform trans(Point3f(0, 0, 0), Vec3f(scale, scale, scale));
+        Renderable* car = new Renderable(carMesh, trans);
+    }
+};
+
+std::string sceneJSON = "/scenes/scene0.json";
 std::string jsonFile2 = "/scenes/scene1.json";
 std::string jsonFile3 = "/scenes/test_scene_2.json";
+//std::string sceneJSON = "scene.json";
 
 void Application::startLoop()
 {
+    renderer.setVSync(true);
     Input::attachFunc(KeyCodes::C, [&] {renderer.toggleCulling(); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::G, [&] {renderer.toggleGUI(); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::V, [&] {renderer.toggleVSync(); }, Input::KEY_PRESSED);
@@ -880,18 +914,12 @@ void Application::startLoop()
     Input::attachFunc(KeyCodes::F, [&] {renderer.toggleBoundingBoxes(); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::H, [&] { SHADER("FXAA")->toggleActive(); }, Input::KEY_PRESSED);
 
-    Input::attachFunc(KeyCodes::THREE, [&] { JSONSceneManager::switchSceneFromFile(jsonFile); }, Input::KEY_PRESSED);
-    Input::attachFunc(KeyCodes::FOUR, [&] { JSONSceneManager::switchSceneFromFile(jsonFile2); }, Input::KEY_PRESSED);
-    Input::attachFunc(KeyCodes::FIVE, [&] { JSONSceneManager::switchSceneFromFile(jsonFile3); }, Input::KEY_PRESSED);
-    //Input::attachFunc(KeyCodes::FOUR,  [&] { SceneManager::switchScene(new TestScene2()); }, Input::KEY_PRESSED);
-    //Input::attachFunc(KeyCodes::FIVE,  [&] { SceneManager::switchScene(new ResourceTestScene()); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::THREE, [&] { JSONSceneManager::switchSceneFromFile(sceneJSON); }, Input::KEY_PRESSED);
+    //Input::attachFunc(KeyCodes::FOUR, [&] { JSONSceneManager::switchSceneFromFile(jsonFile2); }, Input::KEY_PRESSED);
+    //Input::attachFunc(KeyCodes::FIVE, [&] { JSONSceneManager::switchSceneFromFile(jsonFile3); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::SIX,   [&] { SceneManager::switchScene(new BloomTest()); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::SEVEN, [&] { SceneManager::switchScene(new TransformHierarchyScene()); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::EIGHT, [&] { SceneManager::switchScene(new SponzaScene()); }, Input::KEY_PRESSED);
-
-    //Input::attachFunc(KeyCodes::T, [=] { std::cout << SceneManager::getCurrentScene()->getGlobalNodes().size() << std::endl; }, Input::KEY_PRESSED);
-    Input::attachFunc(KeyCodes::T, [=] { MemoryManager::log(); VMM::log(); }, Input::KEY_PRESSED);
-    //Input::attachFunc(KeyCodes::T, [=] { std::cout << MaterialManager::numMaterials() << std::endl; }, Input::KEY_PRESSED);
 
     // Change Window-Title text every second (1000ms)
     Time::setInterval([&] { 
@@ -904,7 +932,7 @@ void Application::startLoop()
 
     //JSONSceneManager::switchSceneFromFile("/scenes/dagger_pistol_pbr.json"));
     //JSONSceneManager::switchSceneFromFile("/scenes/test_scene_2.json"));
-    //JSONSceneManager::switchSceneFromFile(jsonFile);
+    //JSONSceneManager::switchSceneFromFile(sceneJSON);
     SceneManager::switchScene(new TestScene());
 
     //JSONSceneManager::setCleanupStrategy(ECleanupStrategy::TIMER, 10.0f);
@@ -931,7 +959,7 @@ void Application::initDebugMenu()
     DebugMenu* d = new DebugMenu(&renderer, FONT_GET(DEBUG_FONT, 24));
     d->addButton("Scenes", nullptr);
     d->addButton("Empty Scene", []() { SceneManager::switchScene(new EmptyScene()); }, "Scenes");
-    d->addButton("JSON Scene", []() { JSONSceneManager::switchSceneFromFile(jsonFile); }, "Scenes");
+    d->addButton("JSON Scene", []() { JSONSceneManager::switchSceneFromFile(sceneJSON); }, "Scenes");
     d->addButton("Test Scene", []() { SceneManager::switchScene(new TestScene()); }, "Scenes");
     d->addButton("Cube-Scene", []() { SceneManager::switchScene(new TestScene2()); }, "Scenes");
     d->addButton("Bloom-Test", []() { SceneManager::switchScene(new BloomTest()); }, "Scenes");

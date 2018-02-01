@@ -97,14 +97,20 @@ namespace Pyro
 
     void Renderable::setMaterial(MaterialPtr material)
     {
-        if (m_material.isValid()) // a parent object hasn't a material
+        if (subRenderables.size() == 0)
         {
-            m_material->removeRenderable(this);
-            m_material = material.isValid() ? material : MATERIAL_GET(MATERIAL_DEFAULT);
-            m_material->addRenderable(this);
+            if (m_material.isValid()) // a parent object hasn't a material
+            {
+                m_material->removeRenderable(this);
+                m_material = material.isValid() ? material : MATERIAL_GET(MATERIAL_DEFAULT);
+                m_material->addRenderable(this);
+            }
         }
-        for (auto& subRenderable : subRenderables)
-            subRenderable->setMaterial(material);
+        else
+        {
+            for (auto& subRenderable : subRenderables)
+                subRenderable->setMaterial(material);
+        }
     }
 
     void Renderable::render(VkCommandBuffer cmd, ShaderPtr shader)

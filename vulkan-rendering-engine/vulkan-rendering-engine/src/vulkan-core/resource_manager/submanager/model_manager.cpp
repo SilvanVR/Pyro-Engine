@@ -37,7 +37,9 @@ namespace Pyro
                     continue; // File no longer exists
 
                 const SystemTime& fileTime = res->getFileTime();
-                if (fileTime != FileSystem::getLastWrittenFileTime(filePath))
+                SystemTime curFileTime;
+                bool success = FileSystem::getLastWrittenFileTime(filePath, curFileTime);
+                if (fileTime != curFileTime)
                 {
                     Logger::Log("Reloading resource " + filePath);
                     Mesh* pNewMesh = loadFromDisk(filePath);

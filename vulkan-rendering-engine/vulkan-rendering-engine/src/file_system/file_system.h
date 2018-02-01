@@ -41,7 +41,7 @@ namespace Pyro
         static std::string              getDirectoryPath(const std::string& filePath);
 
         // OS dependant functions
-        static SystemTime getLastWrittenFileTime(const std::string& filePath);
+        static bool getLastWrittenFileTime(const std::string& filePath, SystemTime& sysTime);
     };
 
 

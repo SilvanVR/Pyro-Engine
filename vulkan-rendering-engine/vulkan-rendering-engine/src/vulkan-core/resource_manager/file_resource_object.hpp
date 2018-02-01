@@ -16,7 +16,7 @@ namespace Pyro
         {
             if (filepath != "")
                 if (FileSystem::fileExists(VFS::resolvePhysicalPath(filepath)))
-                    m_fileTime = FileSystem::getLastWrittenFileTime(VFS::resolvePhysicalPath(filepath));
+                    FileSystem::getLastWrittenFileTime(VFS::resolvePhysicalPath(filepath), m_fileTime);
         }
         virtual ~FileResourceObject() {}
 

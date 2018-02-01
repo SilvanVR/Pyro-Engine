@@ -6,7 +6,7 @@
 namespace Pyro
 {
 
-    SystemTime FileSystem::getLastWrittenFileTime(const std::string& filePath)
+    bool FileSystem::getLastWrittenFileTime(const std::string& filePath, SystemTime& sysTime)
     {
         HANDLE hFile;
         FILETIME ftLastWriteTime;
@@ -15,12 +15,14 @@ namespace Pyro
 
         if (hFile == INVALID_HANDLE_VALUE)
         {
-            Logger::Log("FileSystem-Windows: Could not open file '" + filePath + "'", LOGTYPE_ERROR);
+            Logger::Log("FileSystem-Windows: Could not open file '" + filePath + "'", LOGTYPE_WARNING);
+            return false;
         }
 
         if (!GetFileTime(hFile, NULL, NULL, &ftLastWriteTime))
         {
-            Logger::Log("FileSystem-Windows: Could not get the filetime of file '" + filePath + "'", LOGTYPE_ERROR);
+            Logger::Log("FileSystem-Windows: Could not get the filetime of file '" + filePath + "'", LOGTYPE_WARNING);
+            return false;
         }
 
         CloseHandle(hFile);
@@ -28,7 +30,6 @@ namespace Pyro
         FileTimeToSystemTime(&ftLastWriteTime, &stUTC);
         SystemTimeToTzSpecificLocalTime(NULL, &stUTC, &stLocal);
 
-        SystemTime sysTime = {};
         sysTime.year            = stLocal.wYear;
         sysTime.month           = stLocal.wMonth;
         sysTime.day             = stLocal.wDay;
@@ -37,7 +38,7 @@ namespace Pyro
         sysTime.second          = stLocal.wSecond;
         sysTime.millisecond     = stLocal.wMilliseconds;
 
-        return sysTime;
+        return true;
     }
 
 
