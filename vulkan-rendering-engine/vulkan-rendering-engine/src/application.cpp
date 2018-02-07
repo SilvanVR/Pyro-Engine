@@ -877,31 +877,58 @@ public:
 
     void init(RenderingEngine* renderer) override
     {
-        Camera* cam = new Camera(Transform(Point3f(0, 0, 20)));
+        Camera* cam = new Camera(Transform(Point3f(0, 0, 3)));
         cam->addComponent(new CMoveCamera(70, 3, 5, ECameraMode::MAYA));
-        cam->addComponent(new CInteract(70.0f));
+        //cam->addComponent(new CInteract(70.0f));
         renderer->setCamera(cam);
+        renderer->setAmbientIntensity(1.0f);
 
-        CubemapPtr cubemap = CUBEMAP("/textures/cubemaps/sunset.dds");
+        CubemapPtr cubemap = CUBEMAP("/textures/cubemaps/hill.dds");
         Skybox* skybox = new Skybox(cubemap);
 
-        MeshPtr carMesh = MESH({ "/models/a6.fbx" });
+        IrradianceMapPtr irr = IRRADIANCEMAP(128, cubemap);
+        PremPtr prem = PREM(256, cubemap);
+        renderer->setEnvironmentMap(prem);
+        renderer->setAmbientIrradianceMap(irr);
 
-        auto tex0 = TEXTURE("/textures/defaults/white.dds");
-        PBRMaterialParams params = { tex0, 1.0f, 0.0f, Color::BLACK };
+        MeshPtr carMesh = MESH({ "A6/a6.obj" });
 
-        auto metallic = PBRMATERIAL(params);
-
-        float scale = 0.2f;
-        Transform trans(Point3f(0, 0, 0), Vec3f(scale, scale, scale));
+        float scale = 1.0f;
+        Transform trans(Point3f(-2.4f, -0.7f, 0), Vec3f(scale, scale, scale));
         Renderable* car = new Renderable(carMesh, trans);
+
+        // DEBUG MENU
+        DebugMenu* debugMenu = dynamic_cast<DebugMenu*>(SceneManager::getCurrentScene()->findNode("DebugMenu"));
+        debugMenu->addButton("Materials", nullptr);
+
+        for (unsigned int i = 0; i < carMesh->numMaterials(); i++)
+        {
+            auto mat = carMesh->getMaterial(i);
+            auto pbrMat = (PBRMaterialPtr) mat;
+            auto name = mat->getName();
+
+            if (name == "Lack")
+            {
+                pbrMat->setMatRoughness(0.05f);
+                pbrMat->setMatMetallic(0.4f);
+            }
+
+            debugMenu->addButton(name, nullptr, "Materials");
+            std::string dirName = "Materials-" + name;
+            debugMenu->addSliderButton("Metallic", [=](float value) mutable { pbrMat->setMatMetallic(value); }, dirName);
+            debugMenu->addSliderButton("Roughness", [=](float value) mutable { pbrMat->setMatRoughness(value); }, dirName);
+            debugMenu->addButton("Color", nullptr, dirName);
+            debugMenu->addSliderButton("Red", [=](float value) mutable { Color c = pbrMat->getMatColor(); c.r() = value; pbrMat->setMatColor(c); }, dirName + "-Color");
+            debugMenu->addSliderButton("Green", [=](float value) mutable { Color c = pbrMat->getMatColor(); c.g() = value; pbrMat->setMatColor(c);  }, dirName + "-Color");
+            debugMenu->addSliderButton("Blue", [=](float value) mutable { Color c = pbrMat->getMatColor(); c.b() = value; pbrMat->setMatColor(c); }, dirName + "-Color");
+        }
     }
 };
 
-std::string sceneJSON = "/scenes/scene0.json";
+//std::string sceneJSON = "/scenes/scene0.json";
+std::string sceneJSON = "scene.json";
 std::string jsonFile2 = "/scenes/scene1.json";
 std::string jsonFile3 = "/scenes/test_scene_2.json";
-//std::string sceneJSON = "scene.json";
 
 void Application::startLoop()
 {
@@ -915,8 +942,8 @@ void Application::startLoop()
     Input::attachFunc(KeyCodes::H, [&] { SHADER("FXAA")->toggleActive(); }, Input::KEY_PRESSED);
 
     Input::attachFunc(KeyCodes::THREE, [&] { JSONSceneManager::switchSceneFromFile(sceneJSON); }, Input::KEY_PRESSED);
-    //Input::attachFunc(KeyCodes::FOUR, [&] { JSONSceneManager::switchSceneFromFile(jsonFile2); }, Input::KEY_PRESSED);
-    //Input::attachFunc(KeyCodes::FIVE, [&] { JSONSceneManager::switchSceneFromFile(jsonFile3); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::FOUR, [&] { JSONSceneManager::switchSceneFromFile(jsonFile2); }, Input::KEY_PRESSED);
+    Input::attachFunc(KeyCodes::FIVE, [&] { JSONSceneManager::switchSceneFromFile(jsonFile3); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::SIX,   [&] { SceneManager::switchScene(new BloomTest()); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::SEVEN, [&] { SceneManager::switchScene(new TransformHierarchyScene()); }, Input::KEY_PRESSED);
     Input::attachFunc(KeyCodes::EIGHT, [&] { SceneManager::switchScene(new SponzaScene()); }, Input::KEY_PRESSED);

@@ -202,6 +202,20 @@ namespace Pyro
 
             PBRMaterialPtr newMaterial = PBRMATERIAL({ nullptr });
 
+            // Set name
+            aiString name;
+            material->Get(AI_MATKEY_NAME, name);
+            newMaterial->setName(name.C_Str());
+
+            // Set diffuse material color
+            aiColor4D diffuse;
+            bool hasDiffuseColor = false;
+            if (AI_SUCCESS == aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse))
+            {
+                hasDiffuseColor = true;
+                newMaterial->setMatColor(Color(diffuse.r, diffuse.g, diffuse.b, diffuse.a));
+            }
+
             // Diffuse-Texture
             auto diffuseMap = loadTexture(material, aiTextureType_DIFFUSE, filePath, true);
             bool hasDiffuseMap = diffuseMap != nullptr;
@@ -209,10 +223,21 @@ namespace Pyro
             {
                 newMaterial->setTexture(SHADER_DIFFUSE_MAP_NAME, diffuseMap);
                 textures.push_back(diffuseMap);
-            } else { // Diffuse-Texture is not even present in the material-class
-                std::string missingTextureMessage = "There is no diffuse texture specified for material #" + TS(i) +
-                                                    " for file " + filePath;
-                Logger::Log(missingTextureMessage, LOGTYPE_WARNING);
+            } else { 
+                // Apply a white texture and not the default texture if a material color was specified.
+                // Assume this is intended.
+                if (hasDiffuseColor)
+                {
+                    auto whiteTexture = TEXTURE({ "/textures/defaults/white.dds" });
+                    newMaterial->setTexture(SHADER_DIFFUSE_MAP_NAME, whiteTexture);
+                }
+                else
+                {
+                    // Diffuse-Texture and color is not even present in the material-class
+                    std::string missingTextureMessage = "There is no diffuse texture and color specified for material #" + TS(i) +
+                                                        " for file " + filePath;
+                    Logger::Log(missingTextureMessage, LOGTYPE_WARNING);
+                }
             }
 
             if (hasDiffuseMap)
@@ -267,11 +292,10 @@ namespace Pyro
                 //int emmissive = material->GetTextureCount(aiTextureType_EMISSIVE);
                 //int shininess = material->GetTextureCount(aiTextureType_SHININESS);
 
-                // Set Material-Properties
                 for (unsigned int j = 0; j < material->mNumProperties; j++)
                 {
                     aiMaterialProperty* prop = material->mProperties[j];
-                    // Add parameters to material
+                    // Add params to material
                 }
             }
             materials[i] = newMaterial;

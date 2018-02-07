@@ -1,0 +1,101 @@
+{
+  "id" : "MyAwesomeScene",
+
+  "settings" :
+  {
+    "ibl" : 
+    {
+      "enabled" : true,
+      "ambient_intensity" : 0.1,
+      "specular_intensity" : 1.0,
+      "env_map" : 
+	  {
+		"src" : "/textures/cubemaps/tropical_sunny_day.dds",
+		"irradiance_size" : 128,
+		"prem_size" : 512
+	  }	  
+    },
+	"post_processing":
+	{
+		"resolution_mod" : 1.0,
+		"fxaa" : true,
+		"bloom" : false,
+		"doa" : false,
+		"fog" : false,
+		"light_shafts" : false
+ 	}
+  },
+
+  "camera" : 
+  {
+    "mode" : "perspective",
+	"fov" : 60,
+    "transform" :
+    {
+      "position" : { "x" : 0, "y" : 0, "z" : 300 },
+      "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+      "rotation" : { "x" : 0, "y" : 0, "z" : 0 }
+    }
+  },  
+    
+  "skybox" :
+  {
+	"cubemap" : "/textures/cubemaps/tropical_sunny_day.dds"
+  },
+  
+  "lights" :
+  {
+    "dirLight" :
+	{
+		"type" : "directional",
+		"intensity" : 2.0,
+		"color" : { "r": 1, "g" : 1, "b": 1 },
+		"direction" : { "x": 0, "y" : -1, "z": 1 },
+		"shadowInfo" :
+		{
+			"size" : 11,
+			"blur_strength" : 1.0,
+			"distance" : 200
+		}
+	}
+  },
+  
+  "models" :
+  {
+     "mesh_0" : "/models/a6.fbx"
+  },
+  
+  "materials" :
+  {
+	"mat_1" :
+	{
+	  "diffuse" : "/textures/defaults/white.dds",
+	  "roughness" : 0.5,
+	  "metallic" : 1,
+	  "color" : "#FFFFFF"
+	},
+	"mat_basic" :
+	{
+	  "diffuse" : "/textures/rock.jpg",
+	  "uvScale" : 1,
+	  "roughness" : 1,
+	  "metallic" : 0
+	}
+  },
+  
+  "objects" :
+  {	
+	"funky" :
+	{
+		"model" : "mesh_0",
+		"material" : "mat_1",
+		"transform" :
+		{
+		  "position" : { "x" : -240, "y" : -50, "z" : 0 },
+		  "scale"    : { "x" : 1, "y" : 1, "z" : 1 },
+		  "rotation" : { "x" : -90, "y" : 0, "z" : 0 }
+		}
+	}
+  }
+
+}
