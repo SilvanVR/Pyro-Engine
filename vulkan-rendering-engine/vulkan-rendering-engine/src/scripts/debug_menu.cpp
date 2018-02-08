@@ -8,8 +8,8 @@
 
 namespace Pyro
 {
-    float buttonWidth = 100;
-    float buttonHeight = 50;
+    float buttonWidth = 90;
+    float buttonHeight = 40;
     float paddingBetweenButtons = 5;
     float sliderLength = 200;
 
@@ -31,7 +31,8 @@ namespace Pyro
 
         debugButton = new GUIButton(buttonTexture, Rectf(-buttonWidth - 3.0f, 3.0f, buttonWidth, buttonHeight), buttonColor, Anchor::TopRight);
 
-        debugButtonText = new GUIText("Debug", Vec2f(0, font->getTextHeight("Debug") / 2.0f), font, textColor, Vec2f(0.8f, 0.8f), Anchor::Center, TextAlign::CENTER);
+        float textScale = 0.4f;
+        debugButtonText = new GUIText("Debug", Vec2f(0, font->getTextHeight("Debug") / 2.0f), font, textColor, Vec2f(textScale, textScale), Anchor::Center, TextAlign::CENTER);
         debugButton->addChild(debugButtonText);
 
         //debugButton->attachFunc(GUIButton::BUTTONPRESSED, [&] { mainGUI->toggleActive(); disableAllSecondGUIs(); isActive = !isActive; });

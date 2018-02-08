@@ -6,6 +6,8 @@
 #include "vulkan-core/data/mesh/mesh.h"
 #include "file_system/vfs.h"
 
+#define PRINT_MATERIAL_PARAMS 0
+
 #include <assimp/Importer.hpp> 
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -284,20 +286,29 @@ namespace Pyro
                     textures.push_back(displacementMap);
                 }
 
-                //int normal = material->GetTextureCount(aiTextureType_NORMALS);
-                //int specular = material->GetTextureCount(aiTextureType_SPECULAR);
-                //int disp = material->GetTextureCount(aiTextureType_DISPLACEMENT);
-                //int height = material->GetTextureCount(aiTextureType_HEIGHT);
-                //int ambent = material->GetTextureCount(aiTextureType_AMBIENT);
-                //int emmissive = material->GetTextureCount(aiTextureType_EMISSIVE);
-                //int shininess = material->GetTextureCount(aiTextureType_SHININESS);
-
-                for (unsigned int j = 0; j < material->mNumProperties; j++)
-                {
-                    aiMaterialProperty* prop = material->mProperties[j];
-                    // Add params to material
-                }
             }
+
+#if PRINT_MATERIAL_PARAMS
+            //int normal = material->GetTextureCount(aiTextureType_NORMALS);
+            int specular = material->GetTextureCount(aiTextureType_SPECULAR);
+            //int disp = material->GetTextureCount(aiTextureType_DISPLACEMENT);
+            //int height = material->GetTextureCount(aiTextureType_HEIGHT);
+            int ambient = material->GetTextureCount(aiTextureType_AMBIENT);
+            int emmissive = material->GetTextureCount(aiTextureType_EMISSIVE);
+            int shininess = material->GetTextureCount(aiTextureType_SHININESS);
+
+            Logger::Log("Ambient: " + TS(ambient));
+            Logger::Log("Emmissive: " + TS(emmissive));
+            Logger::Log("Shininess: " + TS(shininess));
+            Logger::Log("Spec: " + TS(specular));
+
+            for (unsigned int j = 0; j < material->mNumProperties; j++)
+            {
+                aiMaterialProperty* prop = material->mProperties[j];
+                // Add params to material
+            }
+#endif
+
             materials[i] = newMaterial;
         }
     }
