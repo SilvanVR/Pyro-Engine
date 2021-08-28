@@ -1,7 +1,6 @@
 # Pyro-Engine
 
-My first real project, which i started in March 2016 in preparation for my bachelor thesis 
-(Here the link btw: https://www.dropbox.com/s/z1v8gcx79xs8xus/SilvanHau%20BachelorThesis.pdf?dl=0). 
+My first real project, which i started in March 2016 in preparation for my bachelor thesis. 
 At that time i had almost no knowledge about C++, Visual Studio and graphics programming. 
 Besides i had to work with the vulkan specification directly (and this without proper preexperience) because the 1.0 specification were originally released one month after i started this project in 02/2016. This was quite a challenge and today i'd say that starting with vulkan is a bad idea. It's made for performance but only if you have the proper knowledge about it.
 
